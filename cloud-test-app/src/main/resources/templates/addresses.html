@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Addresses</title>
+  <!-- I am using Bootstrap from the CDN to keep life easy -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-dark mb-4">
+  <div class="container">
+    <a class="navbar-brand" href="/users">Cloud Test App</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1 class="h4 mb-3" th:text="'Addresses for ' + ${user.firstName} + ' ' + ${user.lastName}">Addresses</h1>
+
+  <div class="mb-3 d-flex gap-2">
+    <a th:href="@{|/users/${user.id}/addresses/new|}" class="btn btn-primary">Add Address</a>
+    <a th:href="@{/users}" class="btn btn-secondary">Back to Users</a>
+  </div>
+
+  <div class="card">
+    <div class="card-body p-0">
+      <table class="table table-striped mb-0">
+        <thead class="table-dark">
+          <tr>
+            <th>Street</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Zip</th>
+            <th style="width: 120px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="a : ${addresses}">
+            <td th:text="${a.street}">123 Main</td>
+            <td th:text="${a.city}">City</td>
+            <td th:text="${a.state}">ST</td>
+            <td th:text="${a.zip}">00000</td>
+            <td>
+              <form th:action="@{|/users/${user.id}/addresses/${a.id}/delete|}" method="post" style="display:inline;">
+                <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(addresses)}">
+            <td colspan="5" class="text-center p-3">No addresses yet</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>
